@@ -35,7 +35,14 @@ describe('K8sDetector', function () {
     });
 
     it('should return an empty resource if this is not a K8S', function () {
-        process.env.HOSTNAME = '';
+        process.env.HOSTNAME = 'test';
+        return expect(runDetector(k8sDetector, config))
+            .to.eventually.be.an('object')
+            .and.have.deep.property('attributes', {});
+    });
+
+    it('should return an empty resource if this is not a K8S (no hostname)', function () {
+        delete process.env.HOSTNAME;
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
