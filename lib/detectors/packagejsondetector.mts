@@ -1,5 +1,5 @@
 import { readFile, stat } from 'node:fs/promises';
-import { basename, join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import {
     type DetectorSync,
     type IResource,
@@ -45,7 +45,7 @@ export class PackageJsonDetector implements DetectorSync {
         const locations: string[] = [];
         // istanbul ignore next
         if (process.argv[1]) {
-            const dir = basename(process.argv[1]);
+            const dir = dirname(process.argv[1]);
             locations.push(join(dir, 'package.json'), join(dir, '..', 'package.json'));
         }
 
