@@ -7,7 +7,7 @@ async function readAndParse(file: string, re: RegExp): Promise<string> {
         for (const line of lines) {
             const matches = re.exec(line);
             if (matches) {
-                return matches[1];
+                return matches[1]!;
             }
         }
     } catch {
