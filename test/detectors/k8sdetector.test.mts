@@ -35,14 +35,15 @@ describe('K8sDetector', function () {
     });
 
     it('should return an empty resource if this is not a K8S', function () {
-        process.env.HOSTNAME = 'test';
+        process.env['HOSTNAME'] = 'test';
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
     });
 
     it('should return an empty resource if this is not a K8S (no hostname)', function () {
-        delete process.env.HOSTNAME;
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete process.env['HOSTNAME'];
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
@@ -65,11 +66,12 @@ describe('K8sDetector', function () {
                     '/etc/podinfo/namespace': expectedNS,
                 };
 
-                return lookup[path] ? Promise.resolve(lookup[path]) : Promise.reject(new Error());
+                const value = lookup[path];
+                return value ? Promise.resolve(value) : Promise.reject(new Error());
             },
         );
 
-        process.env.HOSTNAME = expectedHostname;
+        process.env['HOSTNAME'] = expectedHostname;
 
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
@@ -92,7 +94,7 @@ describe('K8sDetector', function () {
             new Error(),
         );
 
-        process.env.HOSTNAME = expectedHostname;
+        process.env['HOSTNAME'] = expectedHostname;
 
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')

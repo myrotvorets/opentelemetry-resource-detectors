@@ -12,13 +12,13 @@ import { getContainerIDFormCGroup } from './utils.mjs';
 export class K8sDetector implements DetectorSync {
     // eslint-disable-next-line class-methods-use-this
     public detect(_config: ResourceDetectionConfig): IResource {
-        const matches = /^(.*)-([a-f0-9]+)-([a-z0-9]{5})$/u.exec(process.env.HOSTNAME ?? '');
+        const matches = /^(.*)-([a-f0-9]+)-([a-z0-9]{5})$/u.exec(process.env['HOSTNAME'] ?? '');
         if (!matches) {
             return Resource.empty();
         }
 
         const attrs = {
-            [SemanticResourceAttributes.HOST_NAME]: process.env.HOSTNAME as string,
+            [SemanticResourceAttributes.HOST_NAME]: process.env['HOSTNAME']!,
             [SemanticResourceAttributes.K8S_POD_NAME]: matches[1],
             [SemanticResourceAttributes.K8S_DEPLOYMENT_NAME]: matches[2],
         };

@@ -21,8 +21,8 @@ export class PackageJsonDetector implements DetectorSync {
             const raw = await readFile(file, { encoding: 'utf-8' });
             const json = JSON.parse(raw) as Record<string, unknown>;
             return {
-                [SemanticResourceAttributes.SERVICE_NAME]: `${json.name}`,
-                [SemanticResourceAttributes.SERVICE_VERSION]: `${json.version}`,
+                [SemanticResourceAttributes.SERVICE_NAME]: `${json['name']}`,
+                [SemanticResourceAttributes.SERVICE_VERSION]: `${json['version']}`,
             };
         } catch {
             return {};
