@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { type TestDouble, func, matchers, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 import type { PackageJsonDetector } from '../../lib/detectors/packagejsondetector.mjs';
 import { runDetector } from './helpers.mjs';
 
@@ -45,8 +45,8 @@ describe('PackageJsonDetector', function () {
         return expect(runDetector(packageJsonDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
-                [SemanticResourceAttributes.SERVICE_NAME]: obj.name,
-                [SemanticResourceAttributes.SERVICE_VERSION]: obj.version,
+                [SEMRESATTRS_SERVICE_NAME]: obj.name,
+                [SEMRESATTRS_SERVICE_VERSION]: obj.version,
             });
     });
 });
