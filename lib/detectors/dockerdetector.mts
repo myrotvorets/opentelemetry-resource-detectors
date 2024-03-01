@@ -5,7 +5,7 @@ import {
     type ResourceAttributes,
     type ResourceDetectionConfig,
 } from '@opentelemetry/resources';
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { SEMRESATTRS_CONTAINER_ID } from '@opentelemetry/semantic-conventions';
 import { getContainerIDFormCGroup, getContainerIDFormCGroup2 } from './utils.mjs';
 
 export class DockerDetector implements DetectorSync {
@@ -18,7 +18,7 @@ export class DockerDetector implements DetectorSync {
         const cid = await DockerDetector.getContainerID();
         if (cid) {
             return {
-                [SemanticResourceAttributes.CONTAINER_ID]: cid,
+                [SEMRESATTRS_CONTAINER_ID]: cid,
             };
         }
 
