@@ -7,7 +7,7 @@ import {
     type ResourceAttributes,
     type ResourceDetectionConfig,
 } from '@opentelemetry/resources';
-import { SEMRESATTRS_SERVICE_NAME, SEMRESATTRS_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 
 export class PackageJsonDetector implements DetectorSync {
     // eslint-disable-next-line class-methods-use-this
@@ -21,8 +21,8 @@ export class PackageJsonDetector implements DetectorSync {
             const raw = await readFile(file, { encoding: 'utf-8' });
             const json = JSON.parse(raw) as Record<string, unknown>;
             return {
-                [SEMRESATTRS_SERVICE_NAME]: `${json['name']}`,
-                [SEMRESATTRS_SERVICE_VERSION]: `${json['version']}`,
+                [ATTR_SERVICE_NAME]: `${json['name']}`,
+                [ATTR_SERVICE_VERSION]: `${json['version']}`,
             };
         } catch {
             return {};

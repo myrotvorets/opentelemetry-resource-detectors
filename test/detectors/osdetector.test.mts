@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { type TestDouble, func, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
 import {
-    HOSTARCHVALUES_ARM32,
-    OSTYPEVALUES_LINUX,
-    SEMRESATTRS_HOST_ARCH,
-    SEMRESATTRS_HOST_NAME,
-    SEMRESATTRS_OS_TYPE,
-} from '@opentelemetry/semantic-conventions';
+    ATTR_HOST_ARCH,
+    ATTR_HOST_NAME,
+    ATTR_OS_TYPE,
+    HOST_ARCH_VALUE_ARM32,
+    OS_TYPE_VALUE_LINUX,
+} from '@opentelemetry/semantic-conventions/incubating';
 import type { OSDetector } from '../../lib/detectors/osdetector.mjs';
 
 describe('OSDetector', function () {
@@ -51,7 +51,7 @@ describe('OSDetector', function () {
             .to.be.an('object')
             .and.have.property('attributes')
             .that.is.an('object')
-            .and.has.keys([SEMRESATTRS_HOST_NAME, SEMRESATTRS_HOST_ARCH, SEMRESATTRS_OS_TYPE]);
+            .and.has.keys([ATTR_HOST_NAME, ATTR_HOST_ARCH, ATTR_OS_TYPE]);
     });
 
     it('should prefer lookup table values for architecure', function () {
@@ -62,7 +62,7 @@ describe('OSDetector', function () {
             .to.be.an('object')
             .and.have.property('attributes')
             .that.is.an('object')
-            .and.has.property(SEMRESATTRS_HOST_ARCH, HOSTARCHVALUES_ARM32);
+            .and.has.property(ATTR_HOST_ARCH, HOST_ARCH_VALUE_ARM32);
     });
 
     it('should fall back to the original value for unknown architecure', function () {
@@ -74,7 +74,7 @@ describe('OSDetector', function () {
             .to.be.an('object')
             .and.have.property('attributes')
             .that.is.an('object')
-            .and.has.property(SEMRESATTRS_HOST_ARCH, expected);
+            .and.has.property(ATTR_HOST_ARCH, expected);
     });
 
     it('should prefer lookup table values for OS type', function () {
@@ -85,7 +85,7 @@ describe('OSDetector', function () {
             .to.be.an('object')
             .and.have.property('attributes')
             .that.is.an('object')
-            .and.has.property(SEMRESATTRS_OS_TYPE, OSTYPEVALUES_LINUX);
+            .and.has.property(ATTR_OS_TYPE, OS_TYPE_VALUE_LINUX);
     });
 
     it('should fall back to the original value for unknown OS type', function () {
@@ -96,6 +96,6 @@ describe('OSDetector', function () {
             .to.be.an('object')
             .and.have.property('attributes')
             .that.is.an('object')
-            .and.has.property(SEMRESATTRS_OS_TYPE, 'MYSUPEROS');
+            .and.has.property(ATTR_OS_TYPE, 'MYSUPEROS');
     });
 });

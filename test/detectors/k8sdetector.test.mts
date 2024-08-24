@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import { type TestDouble, func, matchers, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
 import {
-    SEMRESATTRS_CONTAINER_ID,
-    SEMRESATTRS_HOST_ID,
-    SEMRESATTRS_HOST_NAME,
-    SEMRESATTRS_K8S_DEPLOYMENT_NAME,
-    SEMRESATTRS_K8S_NAMESPACE_NAME,
-    SEMRESATTRS_K8S_POD_NAME,
-} from '@opentelemetry/semantic-conventions';
+    ATTR_CONTAINER_ID,
+    ATTR_HOST_ID,
+    ATTR_HOST_NAME,
+    ATTR_K8S_DEPLOYMENT_NAME,
+    ATTR_K8S_NAMESPACE_NAME,
+    ATTR_K8S_POD_NAME,
+} from '@opentelemetry/semantic-conventions/incubating';
 import type { K8sDetector } from '../../lib/detectors/k8sdetector.mjs';
 import { runDetector } from './helpers.mjs';
 
@@ -83,12 +83,12 @@ describe('K8sDetector', function () {
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
-                [SEMRESATTRS_HOST_NAME]: expectedHostname,
-                [SEMRESATTRS_HOST_ID]: expectedUID,
-                [SEMRESATTRS_K8S_POD_NAME]: expectedPod,
-                [SEMRESATTRS_K8S_DEPLOYMENT_NAME]: expectedDeployment,
-                [SEMRESATTRS_K8S_NAMESPACE_NAME]: expectedNS,
-                [SEMRESATTRS_CONTAINER_ID]: expectedCID,
+                [ATTR_HOST_NAME]: expectedHostname,
+                [ATTR_HOST_ID]: expectedUID,
+                [ATTR_K8S_POD_NAME]: expectedPod,
+                [ATTR_K8S_DEPLOYMENT_NAME]: expectedDeployment,
+                [ATTR_K8S_NAMESPACE_NAME]: expectedNS,
+                [ATTR_CONTAINER_ID]: expectedCID,
             });
     });
 
@@ -106,9 +106,9 @@ describe('K8sDetector', function () {
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
-                [SEMRESATTRS_HOST_NAME]: expectedHostname,
-                [SEMRESATTRS_K8S_POD_NAME]: expectedPod,
-                [SEMRESATTRS_K8S_DEPLOYMENT_NAME]: expectedDeployment,
+                [ATTR_HOST_NAME]: expectedHostname,
+                [ATTR_K8S_POD_NAME]: expectedPod,
+                [ATTR_K8S_DEPLOYMENT_NAME]: expectedDeployment,
             });
     });
 });
