@@ -7,13 +7,13 @@ import {
     type ResourceDetectionConfig,
 } from '@opentelemetry/resources';
 import {
-    SEMRESATTRS_CONTAINER_ID,
-    SEMRESATTRS_HOST_ID,
-    SEMRESATTRS_HOST_NAME,
-    SEMRESATTRS_K8S_DEPLOYMENT_NAME,
-    SEMRESATTRS_K8S_NAMESPACE_NAME,
-    SEMRESATTRS_K8S_POD_NAME,
-} from '@opentelemetry/semantic-conventions';
+    ATTR_CONTAINER_ID,
+    ATTR_HOST_ID,
+    ATTR_HOST_NAME,
+    ATTR_K8S_DEPLOYMENT_NAME,
+    ATTR_K8S_NAMESPACE_NAME,
+    ATTR_K8S_POD_NAME,
+} from '@opentelemetry/semantic-conventions/incubating';
 import { getContainerIDFormCGroup } from './utils.mjs';
 
 export class K8sDetector implements DetectorSync {
@@ -25,9 +25,9 @@ export class K8sDetector implements DetectorSync {
         }
 
         const attrs = {
-            [SEMRESATTRS_HOST_NAME]: process.env['HOSTNAME']!,
-            [SEMRESATTRS_K8S_POD_NAME]: matches[1],
-            [SEMRESATTRS_K8S_DEPLOYMENT_NAME]: matches[2],
+            [ATTR_HOST_NAME]: process.env['HOSTNAME']!,
+            [ATTR_K8S_POD_NAME]: matches[1],
+            [ATTR_K8S_DEPLOYMENT_NAME]: matches[2],
         };
 
         return new Resource(attrs, K8sDetector.getAsyncAttributes());
@@ -41,9 +41,9 @@ export class K8sDetector implements DetectorSync {
         ]);
 
         const attrs = {
-            [SEMRESATTRS_HOST_ID]: uid,
-            [SEMRESATTRS_K8S_NAMESPACE_NAME]: ns,
-            [SEMRESATTRS_CONTAINER_ID]: cid,
+            [ATTR_HOST_ID]: uid,
+            [ATTR_K8S_NAMESPACE_NAME]: ns,
+            [ATTR_CONTAINER_ID]: cid,
         };
 
         return K8sDetector.cleanUpAttributes(attrs);

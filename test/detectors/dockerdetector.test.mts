@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { type TestDouble, func, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
-import { SEMRESATTRS_CONTAINER_ID } from '@opentelemetry/semantic-conventions';
+import { ATTR_CONTAINER_ID } from '@opentelemetry/semantic-conventions/incubating';
 import type { DockerDetector } from '../../lib/detectors/dockerdetector.mjs';
 import { runDetector } from './helpers.mjs';
 
@@ -57,7 +57,7 @@ describe('DockerDetector', function () {
         return expect(runDetector(dockerDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
-                [SEMRESATTRS_CONTAINER_ID]: expectedID,
+                [ATTR_CONTAINER_ID]: expectedID,
             });
     });
 
@@ -73,7 +73,7 @@ describe('DockerDetector', function () {
         return expect(runDetector(dockerDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
-                [SEMRESATTRS_CONTAINER_ID]: expectedID,
+                [ATTR_CONTAINER_ID]: expectedID,
             });
     });
 });
