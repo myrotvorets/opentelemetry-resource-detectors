@@ -1,6 +1,6 @@
 {
   "name": "@myrotvorets/opentelemetry-resource-detectors",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "OpenTelemetry resource detectors",
   "type": "module",
   "exports": "./dist/lib/index.mjs",
