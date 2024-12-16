@@ -24,7 +24,6 @@ import {
 } from '@opentelemetry/semantic-conventions/incubating';
 
 export class OSDetector implements DetectorSync {
-    // eslint-disable-next-line class-methods-use-this
     public detect(_config: ResourceDetectionConfig): IResource {
         const attrs = {
             [ATTR_HOST_NAME]: hostname(),

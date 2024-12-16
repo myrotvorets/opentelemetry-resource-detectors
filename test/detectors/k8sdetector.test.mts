@@ -49,7 +49,6 @@ describe('K8sDetector', function () {
     });
 
     it('should return an empty resource if this is not a K8S (no hostname)', function () {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete process.env['HOSTNAME'];
         return expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')

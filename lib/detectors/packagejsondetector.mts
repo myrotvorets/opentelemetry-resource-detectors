@@ -10,7 +10,6 @@ import {
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 
 export class PackageJsonDetector implements DetectorSync {
-    // eslint-disable-next-line class-methods-use-this
     public detect(_config: ResourceDetectionConfig): IResource {
         return new Resource({}, PackageJsonDetector.getAsyncAttributes());
     }
