@@ -9,7 +9,6 @@ import { ATTR_CONTAINER_ID } from '@opentelemetry/semantic-conventions/incubatin
 import { getContainerIDFormCGroup, getContainerIDFormCGroup2 } from './utils.mjs';
 
 export class DockerDetector implements DetectorSync {
-    // eslint-disable-next-line class-methods-use-this
     public detect(_config: ResourceDetectionConfig): IResource {
         return new Resource({}, DockerDetector.getAsyncAttributes());
     }

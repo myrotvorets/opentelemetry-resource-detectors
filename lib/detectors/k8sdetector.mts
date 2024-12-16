@@ -17,7 +17,6 @@ import {
 import { getContainerIDFormCGroup } from './utils.mjs';
 
 export class K8sDetector implements DetectorSync {
-    // eslint-disable-next-line class-methods-use-this
     public detect(_config: ResourceDetectionConfig): IResource {
         const matches = /^(.*)-([a-f0-9]+)-([a-z0-9]{5})$/u.exec(process.env['HOSTNAME'] ?? '');
         if (!matches) {
