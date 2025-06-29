@@ -1,6 +1,5 @@
-/.tsimp
 /.vscode
-/coverage
 /dist
 /node_modules
+/lcov.info
 /test-report.xml
