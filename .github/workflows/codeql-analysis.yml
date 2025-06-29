@@ -23,6 +23,7 @@ jobs:
       matrix:
         language:
           - javascript
+          - actions
     permissions:
       actions: read
       contents: read
@@ -39,3 +40,5 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@39edc492dbe16b1465b0cafca41432d857bdb31a # v3.29.1
+        with:
+          category: "/language:${{ matrix.language }}"
