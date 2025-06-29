@@ -1,5 +1,5 @@
 import { arch, hostname, type } from 'node:os';
-import { type DetectorSync, type IResource, Resource, type ResourceDetectionConfig } from '@opentelemetry/resources';
+import type { DetectedResource, ResourceDetectionConfig, ResourceDetector } from '@opentelemetry/resources';
 import {
     ATTR_HOST_ARCH,
     ATTR_HOST_NAME,
@@ -23,15 +23,15 @@ import {
     OS_TYPE_VALUE_Z_OS,
 } from '@opentelemetry/semantic-conventions/incubating';
 
-export class OSDetector implements DetectorSync {
-    public detect(_config: ResourceDetectionConfig): IResource {
-        const attrs = {
-            [ATTR_HOST_NAME]: hostname(),
-            [ATTR_HOST_ARCH]: OSDetector.mapArchitecture(arch()),
-            [ATTR_OS_TYPE]: OSDetector.mapOSType(type()),
+export class OSDetector implements ResourceDetector {
+    public detect(_config?: ResourceDetectionConfig): DetectedResource {
+        return {
+            attributes: {
+                [ATTR_HOST_NAME]: hostname(),
+                [ATTR_HOST_ARCH]: OSDetector.mapArchitecture(arch()),
+                [ATTR_OS_TYPE]: OSDetector.mapOSType(type()),
+            },
         };
-
-        return new Resource(attrs);
     }
 
     private static mapArchitecture(architecture: string): string {

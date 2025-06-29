@@ -1,30 +1,26 @@
 import { readFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
-import {
-    type DetectorSync,
-    type IResource,
-    Resource,
-    type ResourceAttributes,
-    type ResourceDetectionConfig,
-} from '@opentelemetry/resources';
+import type { DetectedResource, ResourceDetectionConfig, ResourceDetector } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 
-export class PackageJsonDetector implements DetectorSync {
-    public detect(_config: ResourceDetectionConfig): IResource {
-        return new Resource({}, PackageJsonDetector.getAsyncAttributes());
+export class PackageJsonDetector implements ResourceDetector {
+    public detect(_config?: ResourceDetectionConfig): DetectedResource {
+        return {
+            attributes: {
+                [ATTR_SERVICE_NAME]: PackageJsonDetector.getKey('name'),
+                [ATTR_SERVICE_VERSION]: PackageJsonDetector.getKey('version'),
+            },
+        };
     }
 
-    private static async getAsyncAttributes(): Promise<ResourceAttributes> {
+    private static async getKey(key: string): Promise<string | undefined> {
         try {
             const file = await PackageJsonDetector.findPackageJson();
             const raw = await readFile(file, { encoding: 'utf-8' });
             const json = JSON.parse(raw) as Record<string, unknown>;
-            return {
-                [ATTR_SERVICE_NAME]: `${json['name']}`,
-                [ATTR_SERVICE_VERSION]: `${json['version']}`,
-            };
+            return key in json ? `${json[key]}` : undefined;
         } catch {
-            return {};
+            return undefined;
         }
     }
 

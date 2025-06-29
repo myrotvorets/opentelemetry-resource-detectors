@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-async function readAndParse(file: string, re: RegExp): Promise<string> {
+async function readAndParse(file: string, re: RegExp): Promise<string | undefined> {
     try {
         const raw = await readFile(file, { encoding: 'ascii' });
         const lines = raw.trim().split('\n');
@@ -14,8 +14,10 @@ async function readAndParse(file: string, re: RegExp): Promise<string> {
         // Do nothing
     }
 
-    return '';
+    return undefined;
 }
 
-export const getContainerIDFormCGroup = (re: RegExp): Promise<string> => readAndParse('/proc/self/cgroup', re);
-export const getContainerIDFormCGroup2 = (re: RegExp): Promise<string> => readAndParse('/proc/self/mountinfo', re);
+export const getContainerIDFormCGroup = (re: RegExp): Promise<string | undefined> =>
+    readAndParse('/proc/self/cgroup', re);
+export const getContainerIDFormCGroup2 = (re: RegExp): Promise<string | undefined> =>
+    readAndParse('/proc/self/mountinfo', re);
