@@ -1,3 +1,4 @@
+import { before, describe, it } from 'node:test';
 import { expect } from 'chai';
 import { type TestDouble, func, matchers, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
@@ -5,7 +6,9 @@ import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic
 import type { PackageJsonDetector } from '../../lib/detectors/packagejsondetector.mjs';
 import { runDetector } from './helpers.mjs';
 
-describe('PackageJsonDetector', function () {
+import './setup.mjs';
+
+await describe('PackageJsonDetector', async function () {
     let packageJsonDetector: PackageJsonDetector;
     let config: ResourceDetectionConfig;
     let readFileMock: TestDouble<typeof import('node:fs/promises').readFile>;
@@ -28,21 +31,21 @@ describe('PackageJsonDetector', function () {
         };
     });
 
-    it('should return an empty resource when package.json cannot be located', function () {
+    await it('should return an empty resource when package.json cannot be located', async function () {
         when(statMock(matchers.isA(String) as string)).thenReject(new Error());
 
-        return expect(runDetector(packageJsonDetector, config))
+        await expect(runDetector(packageJsonDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
     });
 
-    it('should retrieve name and version from package.json', function () {
+    await it('should retrieve name and version from package.json', async function () {
         const obj = { name: 'Package Name', version: '1.2.3' };
 
         when(statMock(matchers.isA(String) as string)).thenResolve({ isFile: () => true });
         when(readFileMock(matchers.isA(String) as string, { encoding: 'utf-8' })).thenResolve(JSON.stringify(obj));
 
-        return expect(runDetector(packageJsonDetector, config))
+        await expect(runDetector(packageJsonDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
                 [ATTR_SERVICE_NAME]: obj.name,
