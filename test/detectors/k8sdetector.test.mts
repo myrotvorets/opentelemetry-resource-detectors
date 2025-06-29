@@ -1,3 +1,4 @@
+import { afterEach, before, describe, it } from 'node:test';
 import { expect } from 'chai';
 import { type TestDouble, func, matchers, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
@@ -12,9 +13,11 @@ import {
 import type { K8sDetector } from '../../lib/detectors/k8sdetector.mjs';
 import { runDetector } from './helpers.mjs';
 
+import './setup.mjs';
+
 type ReadFileOptionsType = Parameters<typeof import('node:fs/promises').readFile>[1];
 
-describe('K8sDetector', function () {
+await describe('K8sDetector', async function () {
     let env: typeof process.env;
     let k8sDetector: K8sDetector;
     let config: ResourceDetectionConfig;
@@ -41,21 +44,21 @@ describe('K8sDetector', function () {
         process.env = { ...env };
     });
 
-    it('should return an empty resource if this is not a K8S', function () {
+    await it('should return an empty resource if this is not a K8S', async function () {
         process.env['HOSTNAME'] = 'test';
-        return expect(runDetector(k8sDetector, config))
+        await expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
     });
 
-    it('should return an empty resource if this is not a K8S (no hostname)', function () {
+    await it('should return an empty resource if this is not a K8S (no hostname)', async function () {
         delete process.env['HOSTNAME'];
-        return expect(runDetector(k8sDetector, config))
+        await expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {});
     });
 
-    it('should properly extract information', function () {
+    await it('should properly extract information', async function () {
         const expectedUID = '61c0b7d8-0195-4781-b469-ba9ccda365f7';
         const containerID = '524e03333ac128141df9cf0f8449c490e65c3fcf76878a60fe852c6003e7044c';
         const expectedCID = containerID.slice(0, 12);
@@ -79,7 +82,7 @@ describe('K8sDetector', function () {
 
         process.env['HOSTNAME'] = expectedHostname;
 
-        return expect(runDetector(k8sDetector, config))
+        await expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
                 [ATTR_HOST_NAME]: expectedHostname,
@@ -91,7 +94,7 @@ describe('K8sDetector', function () {
             });
     });
 
-    it('should discard empty values', function () {
+    await it('should discard empty values', async function () {
         const expectedPod = 'my-pod';
         const expectedDeployment = '9cb4c7c4b';
         const expectedHostname = `${expectedPod}-${expectedDeployment}-p2qbn`;
@@ -102,7 +105,7 @@ describe('K8sDetector', function () {
 
         process.env['HOSTNAME'] = expectedHostname;
 
-        return expect(runDetector(k8sDetector, config))
+        await expect(runDetector(k8sDetector, config))
             .to.eventually.be.an('object')
             .and.have.deep.property('attributes', {
                 [ATTR_HOST_NAME]: expectedHostname,

@@ -1,3 +1,4 @@
+import { before, beforeEach, describe, it } from 'node:test';
 import { expect } from 'chai';
 import { type TestDouble, func, replaceEsm, when } from 'testdouble';
 import type { ResourceDetectionConfig } from '@opentelemetry/resources';
@@ -10,13 +11,15 @@ import {
 } from '@opentelemetry/semantic-conventions/incubating';
 import type { OSDetector } from '../../lib/detectors/osdetector.mjs';
 
-describe('OSDetector', function () {
+import './setup.mjs';
+
+await describe('OSDetector', async function () {
     let osDetector: OSDetector;
     let config: ResourceDetectionConfig;
 
     let archMock: TestDouble<typeof import('node:os').arch>;
     let typeMock: TestDouble<typeof import('node:os').type>;
-    let osArch: string;
+    let osArch: NodeJS.Architecture;
     let osType: string;
 
     before(async function () {
@@ -45,7 +48,7 @@ describe('OSDetector', function () {
         when(typeMock()).thenReturn(osType);
     });
 
-    it('should retrieve host name, architecture and OS type', function () {
+    await it('should retrieve host name, architecture and OS type', function () {
         const resource = osDetector.detect(config);
         expect(resource)
             .to.be.an('object')
@@ -54,7 +57,7 @@ describe('OSDetector', function () {
             .and.has.keys([ATTR_HOST_NAME, ATTR_HOST_ARCH, ATTR_OS_TYPE]);
     });
 
-    it('should prefer lookup table values for architecure', function () {
+    await it('should prefer lookup table values for architecure', function () {
         when(archMock()).thenReturn('arm');
 
         const resource = osDetector.detect(config);
@@ -65,9 +68,9 @@ describe('OSDetector', function () {
             .and.has.property(ATTR_HOST_ARCH, HOST_ARCH_VALUE_ARM32);
     });
 
-    it('should fall back to the original value for unknown architecure', function () {
+    await it('should fall back to the original value for unknown architecure', function () {
         const expected = 's390';
-        when(archMock()).thenReturn(expected);
+        when(archMock()).thenReturn(expected as unknown as NodeJS.Architecture);
 
         const resource = osDetector.detect(config);
         expect(resource)
@@ -77,7 +80,7 @@ describe('OSDetector', function () {
             .and.has.property(ATTR_HOST_ARCH, expected);
     });
 
-    it('should prefer lookup table values for OS type', function () {
+    await it('should prefer lookup table values for OS type', function () {
         when(typeMock()).thenReturn('Linux');
 
         const resource = osDetector.detect(config);
@@ -88,7 +91,7 @@ describe('OSDetector', function () {
             .and.has.property(ATTR_OS_TYPE, OS_TYPE_VALUE_LINUX);
     });
 
-    it('should fall back to the original value for unknown OS type', function () {
+    await it('should fall back to the original value for unknown OS type', function () {
         when(typeMock()).thenReturn('My Super OS!');
 
         const resource = osDetector.detect(config);
