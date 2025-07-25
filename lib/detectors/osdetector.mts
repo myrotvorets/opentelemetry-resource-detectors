@@ -20,7 +20,7 @@ import {
     OS_TYPE_VALUE_OPENBSD,
     OS_TYPE_VALUE_SOLARIS,
     OS_TYPE_VALUE_WINDOWS,
-    OS_TYPE_VALUE_Z_OS,
+    OS_TYPE_VALUE_ZOS,
 } from '@opentelemetry/semantic-conventions/incubating';
 
 export class OSDetector implements ResourceDetector {
@@ -60,7 +60,7 @@ export class OSDetector implements ResourceDetector {
             OpenBSD: OS_TYPE_VALUE_OPENBSD,
             SunOS: OS_TYPE_VALUE_SOLARIS,
             Windows_NT: OS_TYPE_VALUE_WINDOWS,
-            'OS/390': OS_TYPE_VALUE_Z_OS,
+            'OS/390': OS_TYPE_VALUE_ZOS,
 
             'CYGWIN_NT-5.1': OS_TYPE_VALUE_WINDOWS,
             'CYGWIN_NT-6.1': OS_TYPE_VALUE_WINDOWS,
