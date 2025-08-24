@@ -34,7 +34,7 @@
     "@types/chai": "^5.2.2",
     "@types/chai-as-promised": "^8.0.2",
     "@types/node": "^24.0.7",
-    "chai": "^5.2.0",
+    "chai": "^6.0.0",
     "chai-as-promised": "^8.0.1",
     "eslint-formatter-gha": "^1.5.2",
     "node-reporter-gha": "^2.0.5",
