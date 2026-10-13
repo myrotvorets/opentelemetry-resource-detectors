@@ -39,7 +39,7 @@
     "eslint-formatter-gha": "^2.0.1",
     "node-reporter-gha": "^2.0.8",
     "node-reporter-sonarqube": "^1.0.3",
-    "testdouble": "^3.20.2",
+    "testdouble": "^4.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
